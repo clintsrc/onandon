@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "cleanall": "npm ci && npm --prefix client run clean && npm --prefix server run clean",
     "start": "cd server && npm run start",
     "seed": "cd server && npm run seed",
     "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\"",
