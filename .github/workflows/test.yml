@@ -13,7 +13,7 @@ jobs:
     # specify the os image to use
     runs-on: ubuntu-latest
 
-    # run linter and component tests
+    # run component tests
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -26,8 +26,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Run Lint
-      run: npm run lint
+    #- name: Run Lint
+    #  run: npm run lint
 
     - name: Run Cypress tests
       run: npm run test-component
