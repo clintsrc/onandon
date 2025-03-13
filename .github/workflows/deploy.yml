@@ -1,18 +1,25 @@
-name: Deploy
+name: Deploy To Production
 
 on:
-    push:
-      branches:
-        - main
     pull_request:
       branches:
         - main
-        
-#TODO: What is this block of code doing   
+      types: [closed]   # Trigger when PR is closed (by a PR merge)
+ 
 jobs:
-    deploy:
-      runs-on: ubuntu-latest
-      steps:
+  from-dev-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check is PR source from develop branch
+        run: |
+          if [ "${{ github.head_ref }}" != "develop" ]; then
+            echo "Error: PR must come from the 'develop' branch." && exit 1;
+          fi
+
+  deploy:
+    if: github.event.pull_request.merged == true  # Only run if the PR was merged
+    runs-on: ubuntu-latest
+    steps:
         - name: Checkout source
           uses: actions/checkout@v3
 
