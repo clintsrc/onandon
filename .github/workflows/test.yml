@@ -1,14 +1,19 @@
+# Validate PRs to the develop branch to ensure the code is in a healthy state
+# before it can be merged into main
 name: Run Tests
 
 on:
+  # any pull request activity on the develop branch (create update delete)
   pull_request:
     branches:
       - develop
 
 jobs:
   test:
+    # specify the os image to use
     runs-on: ubuntu-latest
 
+    # run linter and component tests
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
@@ -16,10 +21,13 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '14' # Specify the Node.js version
+        node-version: '22'
 
     - name: Install dependencies
       run: npm install
+
+    - name: Run Lint
+      run: npm run lint
 
     - name: Run Cypress tests
       run: npm run test-component
