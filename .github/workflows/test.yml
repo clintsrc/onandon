@@ -10,6 +10,7 @@ on:
 
 jobs:
   test:
+    name: Checking Tests
     # specify the os image to use
     runs-on: ubuntu-latest
 

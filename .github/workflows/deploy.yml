@@ -8,7 +8,8 @@ on:
       types: [closed]
  
 jobs:
-  from-dev-branch:
+  from-develop-branch:
+    name: Checking PR Branch
     runs-on: ubuntu-latest
     steps:
       - name: Check is PR source from develop branch
@@ -18,6 +19,8 @@ jobs:
           fi
 
   deploy:
+    name: Deploy To Render
+    needs: from-develop-branch  # only run if the source branch is develop
     # Only run if the PR was closed by an actual merge (not an unwanted PR)
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
