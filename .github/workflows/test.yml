@@ -30,8 +30,9 @@ jobs:
       #- name: Run Lint
       #  run: npm run lint
 
+      # Run the cypress tests and upload the mochawesome formatted reports
       - name: Run Cypress tests
-        run: npm run test-component
+        uses: cypress-io/github-action@v3
+        with:
+          start: npm run test-component
 
-      - name: Format and Publish Test Summary Report
-        run: npx github-actions-ctrf cypress/results/test-output-*.xml
