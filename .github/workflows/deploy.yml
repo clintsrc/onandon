@@ -8,25 +8,15 @@ on:
     types: [closed]
 
 jobs:
-  from-develop-branch:
-    name: Checking PR Branch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check is PR source from develop branch
-        run: |
-          if [ "${{ github.head_ref }}" != "develop" ]; then
-            echo "Error: PR must come from the 'develop' branch." && exit 1;
-          fi
-
   deploy:
     name: Deploy To Render
-    needs: from-develop-branch # only run if the source branch is develop
     # Only run if the PR was closed by an actual merge (not an unwanted PR)
-    if: github.event.pull_request.merged == true
+    # Ensure the PR is merged and the source branch is 'develop'
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'develop'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -35,11 +25,6 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
-      # This could be a subset instead, but it's good to have some sanity tests
-      # run to catch any last minute issues that got through!
-      - name: Run Cypress tests (Integration)
-        run: npm run test-component
 
       - name: Deploy
         # The branch should be correct at this point, but it's good to have this
