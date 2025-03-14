@@ -4,11 +4,13 @@ import viteConfig from "./vite.config";
 export default defineConfig({
   // Define a formattter for the reports.
   // Mochawesome provides a polished HTML report, and it's compatible with Cypress.
-  reporter: 'mochawesome',
+  reporter: 'cypress-mochawesome-reporter',
   reporterOptions: {
     reportDir: 'cypress/reports',
-    html: true,   // Generate HTML report
-    json: true    // Generate JSON report
+    mochawesomeFileOptions: {
+      json: true,
+      html: false
+    }
   },
 
   component: {
