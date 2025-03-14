@@ -33,5 +33,5 @@ jobs:
       - name: Run Cypress tests
         run: npm run test-component
 
-      - name: Publish Test Report
-        run: npx github-actions-ctrf ctrf/ctrf-report.json
+      - name: Format and Publish Test Summary Report
+        run: npx github-actions-ctrf cypress/results/test-output-*.xml
