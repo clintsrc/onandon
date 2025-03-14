@@ -1,12 +1,17 @@
-import { defineConfig } from 'cypress';
-import viteConfig from './vite.config';
+import { defineConfig } from "cypress";
+import viteConfig from "./vite.config";
 
 export default defineConfig({
+  //"reporter": "spec",
+  reporter: "junit",
+  reporterOptions: {
+    mochaFile: "cypress/results/test-output-[hash].xml",
+  },
   component: {
     port: 5173,
     devServer: {
-      framework: 'react',
-      bundler: 'vite',
+      framework: "react",
+      bundler: "vite",
       viteConfig,
     },
   },
