@@ -39,7 +39,7 @@ jobs:
       - name: Upload mochawesome report
         # upload even when there are failures
         if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: mochawesome-report
           path: cypress/reports/cypress_tests.html
