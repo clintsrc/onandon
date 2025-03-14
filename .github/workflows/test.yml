@@ -1,5 +1,6 @@
 # Validate PRs to the develop branch to ensure the code is in a healthy state
 # before it can be merged into main
+# refs: https://docs.cypress.io/app/continuous-integration/github-actions
 name: Run Tests
 
 on:
@@ -10,6 +11,7 @@ on:
 
 jobs:
   cypress-run:
+    name: Checking Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -34,3 +36,9 @@ jobs:
         with:
           name: cypress-reports
           path: cypress/reports/**/*
+
+      - name: Upload Cypress test results
+        uses: github-actions-ctrf@v0.0.58
+        with:
+          name: Cypress Tests
+          path: cypress/reports/mochawesome.json
