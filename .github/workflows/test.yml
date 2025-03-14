@@ -9,40 +9,18 @@ on:
       - develop
 
 jobs:
-  test:
-    name: Checking Tests
-    # specify the os image to use
-    runs-on: ubuntu-latest
-
-    # run component tests
+  cypress-run:
+    runs-on: ubuntu-24.04
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      #- name: Run Lint
-      #  run: npm run lint
-
-      - name: Start application
-        run: npm run develop
-
-      # Run the cypress tests and upload the mochawesome formatted reports
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v3
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
         with:
-          start: npm run test-component
-
-      - name: Upload mochawesome report
-        # upload even when there are failures
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: mochawesome-report
-          path: cypress/reports/mochawesome.html
+          build: npm run build
+          start: npm start
+          spec: 'cypress/component/**/*'
