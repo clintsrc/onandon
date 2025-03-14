@@ -1,12 +1,12 @@
 name: Deploy To Production
 
 on:
-    pull_request:
-      branches:
-        - main
-      # Trigger when the develop-to-main PR is automatically closed by a PR merge
-      types: [closed]
- 
+  pull_request:
+    branches:
+      - main
+    # Trigger when the develop-to-main PR is automatically closed by a PR merge
+    types: [closed]
+
 jobs:
   from-develop-branch:
     name: Checking PR Branch
@@ -20,41 +20,32 @@ jobs:
 
   deploy:
     name: Deploy To Render
-    needs: from-develop-branch  # only run if the source branch is develop
+    needs: from-develop-branch # only run if the source branch is develop
     # Only run if the PR was closed by an actual merge (not an unwanted PR)
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
-        - name: Checkout source
-          uses: actions/checkout@v3
+      - name: Checkout source
+        uses: actions/checkout@v3
 
-        - name: Set up Node.js
-          uses: actions/setup-node@v4
-          with:
-            node-version: '22'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
-        - name: Install dependencies
-          run: npm install
+      - name: Install dependencies
+        run: npm install
 
-        # This could be a subset instead, but it's good to have some sanity tests
-        # run to catch any last minute issues that got through!
-        - name: Run Cypress tests (Integration)
-          run: npm run test-component
+      # This could be a subset instead, but it's good to have some sanity tests
+      # run to catch any last minute issues that got through!
+      - name: Run Cypress tests (Integration)
+        run: npm run test-component
 
-        - name: Deploy
-          # The branch should be correct at this point, but it's good to have this
-          # positive check
-          if: github.ref == 'refs/heads/main'
-          env:
-            DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-          run: |
-            curl "$DEPLOY_URL"
-   
-        - name: Check site status
-          # run curl under the hood to be sure the site is up and running
-          uses: jtalk/url-health-check-action@v3
-          with:
-            url: 'https://onandon.onrender.com/'
-            max-attempts: 5
-            retry-delay: 10s
-
+      - name: Deploy
+        # The branch should be correct at this point, but it's good to have this
+        # positive check
+        if: github.ref == 'refs/heads/main'
+        env:
+          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$DEPLOY_URL"

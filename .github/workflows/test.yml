@@ -16,19 +16,19 @@ jobs:
 
     # run component tests
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install dependencies
+        run: npm install
 
-    #- name: Run Lint
-    #  run: npm run lint
+      #- name: Run Lint
+      #  run: npm run lint
 
-    - name: Run Cypress tests
-      run: npm run test-component
+      - name: Run Cypress tests
+        run: npm run test-component
