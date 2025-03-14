@@ -37,8 +37,5 @@ jobs:
           name: cypress-reports
           path: cypress/reports/**/*
 
-      - name: Upload Cypress test results
-        uses: github-actions-ctrf@v0.0.58
-        with:
-          name: Cypress Tests
-          path: cypress/reports/mochawesome.json
+      - name: Publish Test Summary Results
+        run: npx github-actions-ctrf cypress/reports/mochawesome.json
