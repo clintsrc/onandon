@@ -1,6 +1,10 @@
 # Validate PRs to the develop branch to ensure the code is in a healthy state
 # before it can be merged into main
-# refs: https://docs.cypress.io/app/continuous-integration/github-actions
+# refs: 
+#   https://docs.cypress.io/app/continuous-integration/github-actions
+#   https://github.blog/news-insights/product-news/supercharging-github-actions-with-job-summaries/
+#   https://emojipedia.org/
+#
 name: Run Tests
 
 on:
@@ -42,14 +46,19 @@ jobs:
         run: |
           # Parse the mochawesome report
           RESULTS=$(cat cypress/reports/.jsons/mochawesome.json)
-          
+
           # Extract results using jq (make sure you have jq installed)
           PASSED=$(echo $RESULTS | jq '.stats.passes')
           FAILED=$(echo $RESULTS | jq '.stats.failures')
-          TOTAL=$(echo $RESULTS | jq '.stats.tests')
+          PENDING=$(echo $RESULTS | jq '.stats.pending')
+          SKIPPED=$(echo $RESULTS | jq '.stats.skipped')
+          DURATION=$(echo $RESULTS | jq '.stats.duration')
 
-          # Write the summary to the GitHub Actions job summary
+          # Format the duration (convert to seconds and round to 3 decimal places)
+          DURATION=$(echo "scale=3; $DURATION / 1000" | bc)
+
+          # Write a more polished table to the GitHub Actions job summary
           echo "## Cypress Test Results" >> $GITHUB_STEP_SUMMARY
-          echo "Total Tests: $TOTAL" >> $GITHUB_STEP_SUMMARY
-          echo "Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
-          echo "Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
+          echo "| Result  | Passed ✅ | Failed ❌ | Pending 🤚 | Skipped ↩️ | Duration 🕗 |" >> $GITHUB_STEP_SUMMARY
+          echo "|---------|-----------|---------|---------|---------|------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Passing | $PASSED   | $FAILED | $PENDING | $SKIPPED | ${DURATION}s |" >> $GITHUB_STEP_SUMMARY
