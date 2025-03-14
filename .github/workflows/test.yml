@@ -25,8 +25,5 @@ jobs:
       - name: Start the server in dev mode
         run: npm run develop &
 
-      - name: Wait for server to be ready
-        run: npx wait-on http://localhost:3000
-
       - name: Run Cypress component tests
         run: npm run test-component
