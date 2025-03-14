@@ -31,6 +31,9 @@ jobs:
       - name: Run Cypress component tests
         run: npm run test-component
 
+      - name: Debug Cypress Report Path
+        run: ls -R cypress/reports || echo "No reports found"
+
       - name: Upload Cypress reports
         uses: actions/upload-artifact@v4
         with:
