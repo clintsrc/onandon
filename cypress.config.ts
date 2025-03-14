@@ -6,7 +6,9 @@ export default defineConfig({
   // Mochawesome provides a polished HTML report, and it's compatible with Cypress.
   reporter: 'mochawesome',
   reporterOptions: {
-    reportDir: 'cypress/reports'
+    reportDir: 'cypress/reports',
+    html: true,   // Generate HTML report
+    json: true    // Generate JSON report
   },
 
   component: {
