@@ -37,3 +37,19 @@ jobs:
         with:
           name: cypress-report
           path: cypress/reports/.jsons/mochawesome.json
+
+      - name: Display Cypress test results in job summary
+        run: |
+          # Parse the mochawesome report
+          RESULTS=$(cat cypress/reports/.jsons/mochawesome.json)
+          
+          # Extract results using jq (make sure you have jq installed)
+          PASSED=$(echo $RESULTS | jq '.stats.passes')
+          FAILED=$(echo $RESULTS | jq '.stats.failures')
+          TOTAL=$(echo $RESULTS | jq '.stats.tests')
+
+          # Write the summary to the GitHub Actions job summary
+          echo "## Cypress Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "Total Tests: $TOTAL" >> $GITHUB_STEP_SUMMARY
+          echo "Passed: $PASSED" >> $GITHUB_STEP_SUMMARY
+          echo "Failed: $FAILED" >> $GITHUB_STEP_SUMMARY
