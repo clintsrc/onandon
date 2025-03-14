@@ -22,8 +22,8 @@ jobs:
       - name: Build the app
         run: npm run build
 
-      - name: Start the server in the background
-        run: npm run start &
+      - name: Start the server in dev mode
+        run: npm run develop &
 
       - name: Wait for server to be ready
         run: npx wait-on http://localhost:3000
