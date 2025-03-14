@@ -30,6 +30,9 @@ jobs:
       #- name: Run Lint
       #  run: npm run lint
 
+      - name: Start application
+        run: npm run develop
+
       # Run the cypress tests and upload the mochawesome formatted reports
       - name: Run Cypress tests
         uses: cypress-io/github-action@v3
