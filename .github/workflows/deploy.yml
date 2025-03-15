@@ -1,11 +1,11 @@
 name: Deploy To Production
 
 on:
+  push:
+    branches: [main]
   pull_request:
     branches:
       - main
-    # Trigger when the develop-to-main PR is automatically closed by a PR merge
-    types: [closed]
 
 jobs:
   deploy:
