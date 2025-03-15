@@ -1,6 +1,7 @@
 name: Deploy To Production
 
 on:
+  # A merge from develop into main triggers the push event to main
   push:
     branches: [main]
   pull_request:
@@ -10,9 +11,6 @@ on:
 jobs:
   deploy:
     name: Deploy To Render
-    # Only run if the PR was closed by an actual merge (not an unwanted PR)
-    # Ensure the PR is merged and the source branch is 'develop'
-    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'develop'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
