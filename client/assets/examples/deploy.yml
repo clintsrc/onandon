@@ -1,0 +1,62 @@
+#
+# EXAMPLE Deploy Check v2+
+#
+# This example captures an enhanced version of the deployment script for the next
+# version: it ensures that the Merge pull request option is only available for
+# branches being merged from develop to main. It also includes a linter job. It 
+# wasn't practical to implement it for this exercise because it reports 600+ errors!
+#
+# Executes for any PR or Merge pull request to the main branch. PR changes don't
+# currently do anything, but it is extensible for adding final pre-release actions
+# or tests like linting.
+#
+# Executes a deployment to Render for Merge pull request (push) action to the main
+# branch, but the push would only be available with all of the other jobs pass.
+#
+# The script can be monitored on a pull request's Checks tab
+#
+name: Deploy To Production
+
+on:
+  pull_request:
+    branches:
+      - main
+    # Trigger when the develop-to-main PR is automatically closed by a PR merge
+    types: [closed]
+
+jobs:
+  deploy:
+    name: Deploy To Render
+    # Only run if the PR was closed by an actual merge (not an unwanted PR)
+    # Ensure the PR is merged and the source branch is 'develop'
+    if: github.event.pull_request.merged == true && github.event.pull_request.head.ref == 'develop'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install
+
+      # Install dependencies
+      - name: 🧰 Install Deps
+        run: npm install
+
+      # Run lint -- running lint isn't practical for this exercise (600+ errors!)
+      # but it would be great to have it, and it would execute for the PR updates
+      # without deploying
+      - name: Run Lint
+        run: npm run lint
+
+      - name: Deploy
+        # Make sure the branch is the main branch (the Merge pull request push action)
+        if: github.ref == 'refs/heads/main'
+        env:
+          DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+        run: |
+          curl "$DEPLOY_URL"
