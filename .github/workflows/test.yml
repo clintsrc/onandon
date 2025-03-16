@@ -34,20 +34,24 @@ jobs:
         run: npm run build
 
       - name: Run the server
-        run: npm run develop &  # background the server process
+        run: npm run develop &  # Background the server process
 
       - name: Run Cypress tests
         run: npm run test-component
+        continue-on-error: true  # Continue on to report failed tests
 
       # Save the downloadable reports for convenience
       - name: Upload Cypress report artifacts
-        if: always()  # Run this step even if tests fail
+      # Upload the report even if tests fail
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: cypress-report
           path: cypress/reports/.jsons/mochawesome.json
 
       - name: Display Cypress test Job Summary
+        # Show the summary even if tests fail
+        if: always()
         run: |
           # Parse the mochawesome report
           RESULTS=$(cat cypress/reports/.jsons/mochawesome.json)
