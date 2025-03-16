@@ -42,7 +42,7 @@ jobs:
 
       # Save the downloadable reports for convenience
       - name: Upload Cypress report artifacts
-      # Upload the report even if tests fail
+        # Upload the report even if tests fail
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -71,3 +71,17 @@ jobs:
           echo "| Result  | Passed ✅ | Failed ❌ | Pending 🤚 | Skipped ↩️ | Duration 🕗 |" >> $GITHUB_STEP_SUMMARY
           echo "|---------|-----------|---------|---------|---------|------------|" >> $GITHUB_STEP_SUMMARY
           echo "| Passing | $PASSED   | $FAILED | $PENDING | $SKIPPED | ${DURATION}s |" >> $GITHUB_STEP_SUMMARY
+
+      # Fail the job if there are test failures
+      - name: Fail if tests failed
+        if: always()  # Run regardless of previous steps' success
+        run: |
+          RESULTS=$(cat cypress/reports/.jsons/mochawesome.json)
+          FAILED=$(echo $RESULTS | jq '.stats.failures')
+
+          if [ "$FAILED" -gt 0 ]; then
+            echo "Tests failed: $FAILED ❌"
+            exit 1
+          else
+            echo "All tests passed ✅"
+          fi
