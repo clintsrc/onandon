@@ -17,8 +17,7 @@ describe('Quiz Component', () => {
     cy.mount(<Quiz />);
     cy.get('button').contains('Start Quiz').click();
     cy.get('.card').should('be.visible');
-    //cy.get('h2').should('not.be.empty');
-    cy.get('h2').should('not.exist'); // test the test
+    cy.get('h2').should('not.exist');
   });
 
   it('should answer questions and complete the quiz', () => {
