@@ -27,7 +27,7 @@ This project uses a CI/CD pipeline powered by GitHub Actions. It runs Cypress te
 ## Usage
 
 1. Change to the project's root directory
-2. Start the application: npm run start:dev
+2. Start the application: npm run develop
 3. Refer to the [Tests](#tests) section to execute the Cypress tests.
 4. See the [spec](client/assets/docs/spec.md) for the details of the original requirements
    - See the On and On live deployment hosted on Render [here](https://onandon.onrender.com)
