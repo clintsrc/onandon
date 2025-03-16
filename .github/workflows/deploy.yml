@@ -2,7 +2,7 @@
 # Deploy Check
 #
 # Executes for any PR or Merge pull request to the main branch. PR changes don't 
-# currently do anything, but it is extensible for addding final pre-release actions 
+# currently do anything, but it is extensible for adding final pre-release actions 
 # or tests like linting.
 #
 # Executes a deployment to Render for Merge pull request (push) actions to the main
